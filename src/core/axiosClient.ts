@@ -30,7 +30,7 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error('Failed to refresh access token', error);
     removeToken();
-    window.location.href = 'http:/localhost:3000/login'
+    window.location.href = `${process.env.REACT_APP_BASE_URL}/login`
     return null;
   }
 };
