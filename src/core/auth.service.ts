@@ -40,8 +40,9 @@ export async function signOut() {
     localStorage.clear();
 }
 
-export function isLoggedIn() {
-    debugger
-    if(cookies.get('access_token')) return true;
-    return false;
+export function getLoginStatus(): Promise<boolean> {
+    return new Promise((resolve) => {
+        if(cookies.get('access_token')) return resolve(true);
+        return resolve(false);
+    })
 }

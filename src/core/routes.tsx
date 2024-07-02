@@ -12,14 +12,16 @@ const TaskManagerRoutes = () => {
                 <Route path="/login" element={<SignInComponent />} />
             </Route>
 
-            <Route element={<WithNav />}>
+            <Route element={
+                <PrivateRoute>
+                    <WithNav />
+                </PrivateRoute>
+            }>
                 <Route path="/" element={<Navigate to="/task-manager" />} />
                 <Route
                     path="task-manager"
                     element={
-                        <PrivateRoute>
-                            <TaskManagerComponent />
-                        </PrivateRoute>
+                        <TaskManagerComponent />
                     }
                 />
             </Route>
