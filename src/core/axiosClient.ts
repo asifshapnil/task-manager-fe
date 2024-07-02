@@ -52,7 +52,7 @@ axiosInstance.interceptors.request.use(
 
   function (error) {
     document.body.classList.remove("loading-indicator");
-    if (numberOfAjaxCAllPending == 0) {
+    if (numberOfAjaxCAllPending === 0) {
     }
     return Promise.reject(error);
   }
@@ -62,7 +62,7 @@ axiosInstance.interceptors.response.use(
   function (response) {
     numberOfAjaxCAllPending--;
 
-    if (numberOfAjaxCAllPending == 0) {
+    if (numberOfAjaxCAllPending === 0) {
       document.body.classList.remove("loading-indicator");
     }
 
@@ -74,7 +74,7 @@ axiosInstance.interceptors.response.use(
     const originalRequest = error.config;
 
     document.body.classList.remove("loading-indicator");
-    if (numberOfAjaxCAllPending == 0) {
+    if (numberOfAjaxCAllPending === 0) {
     }
 
     if (error.response.status === 401 && !originalRequest._retry) {
