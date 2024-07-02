@@ -3,11 +3,12 @@ import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
 
-export function setToken(access_token: string, refreh_token: string) {
-    cookies.set("acess_token", access_token, { path: "/" });
-    cookies.set("refresh_token", access_token, { path: "/" });
+export function setToken(access_token: string, refresh_token: string) {
+    cookies.set("access_token", access_token, { path: "/" });
+    cookies.set("refresh_token", refresh_token, { path: "/" });
     const user = jwtDecode(access_token);
     localStorage.setItem("userpublicinfo", JSON.stringify(user));
+    window.location.href = 'http://localhost:3001';
 }
 
 export function removeToken() {

@@ -1,10 +1,12 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import categorySlice from "./category.slice";
+import authSlice from "./auth.slice";
 
 
 export const store = configureStore({
   reducer: {
-    employees: categorySlice,
+    auth: authSlice,
+    categories: categorySlice
   },
   // middleware: (getDefaultMiddleware: () => any) =>
   //   getDefaultMiddleware({

@@ -1,9 +1,12 @@
-import { createRef, useState } from "react";
+import { createRef, useEffect, useState } from "react";
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component"
 import * as yup from "yup";
 import { Button } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { signIn } from "../../store/auth.slice";
 
 const SignInComponent = () => {
+    const dispatch = useDispatch();
     const formRef = createRef();
     const [initialValues, setInitialValues] = useState<any>({
         email: "",
@@ -37,6 +40,22 @@ const SignInComponent = () => {
         password: yup.string().required('Password is required')
     });
 
+    const onSubmit = () => {
+        const form: any = formRef.current;
+
+        if (form) {
+            form.handleSubmit();
+            const { email, password } = form.values;
+            if(!email || !password) return;
+
+            dispatch(signIn(form.values));
+        }
+    }
+
+    useEffect(() => {
+
+    }, [])
+
     return <>
         <div className="d-flex" style={{ height: '100vh' }}>
             <div style={{ width: '60%', backgroundColor: '#25B0EA' }} className="d-flex align-items-center p-3">
@@ -62,15 +81,15 @@ const SignInComponent = () => {
                     </span>
                 </div>
             </div>
-            <div className="d-flex justify-content-center align-items-center" style={{flex: 1}}>
+            <div className="d-flex justify-content-center align-items-center" style={{ flex: 1 }}>
                 <div className="bg-card w-100 p-2">
                     <FormBuilderComponent
                         formRef={formRef}
                         initialValues={initialValues}
                         validation={validationSchema}
                         formConfig={formConfiguration}
-                    />
-                    <Button variant="primary">
+                    /> 
+                    <Button variant="primary" onClick={() => onSubmit()}>
                         Sign in
                     </Button>
                 </div>

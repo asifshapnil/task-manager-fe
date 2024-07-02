@@ -36,5 +36,4 @@ export const categorySlice = createSlice({
     },
 });
 
-export const { setEmployees } = categorySlice.actions;
 export default categorySlice.reducer;

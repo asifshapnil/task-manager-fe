@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
 const refreshAccessToken = async () => {
   try {
     const refreshToken = cookies.get("refresh_token");
-    const response = await axios.post('/refresh-token', { refresh_token: refreshToken }, {
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/refresh`, { refresh_token: refreshToken }, {
       headers: {
         Authorization: `bearer ${refreshToken}`
       }
@@ -30,17 +30,18 @@ const refreshAccessToken = async () => {
   } catch (error) {
     console.error('Failed to refresh access token', error);
     removeToken();
-    window.location.href = `${process.env.REACT_APP_BASE_URL}/login`
+    window.location.href = `http://localhost:3001/login`
     return null;
   }
 };
 
 axiosInstance.interceptors.request.use(
   function (config) {
+    
     const token = cookies.get("access_token");
 
+    config.headers["Authorization"] = `Bearer ${token}`;
     if (token) {
-      config.headers["Authorization"] = `Bearer ${token}`;
     }
 
     numberOfAjaxCAllPending++;
@@ -70,6 +71,7 @@ axiosInstance.interceptors.response.use(
   },
 
   async function (error) {
+    
     numberOfAjaxCAllPending--;
     const originalRequest = error.config;
 
@@ -84,6 +86,20 @@ axiosInstance.interceptors.response.use(
         axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
         return axiosInstance(originalRequest);
       }
+    } else {
+      if(error?.response?.data?.message) {
+        for(let err of error.response.data.message) {
+          toast.error(err, {
+            position: "top-right",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            pauseOnHover: true,
+          });
+        }
+      }       
     }
 
     return Promise.reject(error);

@@ -13,15 +13,15 @@ const TaskManagerRoutes = () => {
             </Route>
 
             <Route element={
-                <PrivateRoute>
-                    <WithNav />
-                </PrivateRoute>
+                <PrivateRoute> <WithNav /> </PrivateRoute>
             }>
                 <Route path="/" element={<Navigate to="/task-manager" />} />
                 <Route
                     path="task-manager"
                     element={
-                        <TaskManagerComponent />
+                        <PrivateRoute>
+                            <TaskManagerComponent />
+                        </PrivateRoute>
                     }
                 />
             </Route>

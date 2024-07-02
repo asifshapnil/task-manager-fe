@@ -13,8 +13,11 @@ const PrivateRoute: FC<Props> = ({
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const checkLogin = async() => {
+        const checkLogin = async () => {
+            debugger
             const isLoggedIn: boolean = await getLoginStatus();
+            console.log(isLoggedIn);
+
             setIsLoggedIn(isLoggedIn);
             setLoginChecked(true);
         }
@@ -24,7 +27,9 @@ const PrivateRoute: FC<Props> = ({
     return <>
         {
             loginChecked && <>
-                {isLoggedIn ? { children } : (
+                {isLoggedIn ? <>
+                    {children}
+                </> : (
                     <Navigate to={"/login"} />
                 )}
             </>

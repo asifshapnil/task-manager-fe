@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "../core/axiosClient";
+import { setToken } from "../core/auth.service";
 
 const initialState: any = {
     access_token: '',
@@ -10,24 +11,25 @@ const initialState: any = {
 
 export const signIn: any = createAsyncThunk(
     "content/signin",
-    async () => {
-        const res = await axios.get(`/signin`);
+    async (payload: any) => {
+        const res = await axios.post(`/users/signin`, payload);
         const data = await res.data;
+        debugger
         return data;
     }
 );
 
 export const signUp: any = createAsyncThunk(
     "content/signup",
-    async () => {
-        const res = await axios.get(`/signin`);
+    async (payload: any) => {
+        const res = await axios.get(`/users/signup`, payload);
         const data = await res.data;
         return data;
     }
 );
 
-export const categorySlice = createSlice({
-    name: "categories",
+export const authSlice = createSlice({
+    name: "auth",
     initialState,
     reducers: {
     },
@@ -36,9 +38,11 @@ export const categorySlice = createSlice({
             state.isLoading = true;
         });
         builder.addCase(signIn.fulfilled, (state: any, action: any) => {
+            debugger
             state.isLoading = false;
-            state.access_token = action.payload.data.access_token;
-            state.refresh_token = action.payload.data.refresh_token;
+            state.access_token = action.payload.access_token;
+            state.refresh_token = action.payload.refresh_token;
+            setToken(action.payload.access_token, action.payload.refresh_token);
         });
         builder.addCase(signIn.rejected, (state: any, action: any) => {
             state.isLoading = false;
@@ -59,5 +63,4 @@ export const categorySlice = createSlice({
     },
 });
 
-export const { setEmployees } = categorySlice.actions;
-export default categorySlice.reducer;
+export default authSlice.reducer;
