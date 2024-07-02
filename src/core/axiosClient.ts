@@ -2,6 +2,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
+import { removeToken, setToken } from "./auth.service";
 
 var numberOfAjaxCAllPending = 0;
 const cookies = new Cookies();
@@ -22,15 +23,13 @@ const refreshAccessToken = async () => {
         Authorization: `bearer ${refreshToken}`
       }
     });
-    cookies.set("acess_token", response.data.access_token, { path: "/" });
     cookies.set("refresh_token", response.data.refresh_token, { path: "/" });
+    setToken( response.data.access_token, response.data.refresh_token)
 
     return response.data.access_token;
   } catch (error) {
     console.error('Failed to refresh access token', error);
-    // Handle refresh token failure (e.g., redirect to login)
-    cookies.remove("access_token", { path: "/" });
-    cookies.remove("refresh_token", { path: "/" });
+    removeToken();
     window.location.href = 'http:/localhost:3000/login'
     return null;
   }

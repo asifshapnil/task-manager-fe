@@ -1,25 +1,30 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter } from "react-router-dom";
+import TaskManagerRoutes from './core/routes';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <BrowserRouter>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <div
+          style={{
+            flexGrow: 1,
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+          {<TaskManagerRoutes />}
+        </div>
+        <div>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
