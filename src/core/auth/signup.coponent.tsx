@@ -3,13 +3,13 @@ import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form
 import * as yup from "yup";
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { signIn } from "../../store/auth.slice";
-import { useNavigate } from "react-router-dom";
+import { signUp } from "../../store/auth.slice";
+import { useSelector } from "react-redux";
 
-const SignInComponent = () => {
-    const navigate = useNavigate();
+const SignUpComponent = () => {
     const dispatch = useDispatch();
     const formRef = createRef();
+    const isLoadingSignup = useSelector((state: any) => state.auth.isLoadingSignup);
     const [initialValues, setInitialValues] = useState<any>({
         email: "",
         password: ""
@@ -48,15 +48,16 @@ const SignInComponent = () => {
         if (form) {
             form.handleSubmit();
             const { email, password } = form.values;
-            if (!email || !password) return;
+            if(!email || !password) return;
 
-            dispatch(signIn(form.values));
+            dispatch(signUp(form.values));
         }
     }
 
     useEffect(() => {
-
-    }, [])
+        console.log(isLoadingSignup);
+        
+    }, [isLoadingSignup])
 
     return <>
         <div className="d-flex" style={{ height: '100vh' }}>
@@ -90,21 +91,14 @@ const SignInComponent = () => {
                         initialValues={initialValues}
                         validation={validationSchema}
                         formConfig={formConfiguration}
-                    />
-                    <div className="d-flex justify-content-between align-items-end">
-                        <Button variant="primary" onClick={() => onSubmit()}>
-                            Sign in
-                        </Button>
-                        <div style={{
-                            fontSize: '14px'
-                        }}>
-                            Not having account? <span onClick={() => navigate('/register')} className="ms-2" style={{color: 'blue', cursor: 'pointer'}}>Sign up</span>
-                        </div>
-                    </div>
+                    /> 
+                    <Button variant="primary" onClick={() => onSubmit()}>
+                        Signup & login
+                    </Button>
                 </div>
             </div>
         </div>
     </>
 }
 
-export default SignInComponent
+export default SignUpComponent;
