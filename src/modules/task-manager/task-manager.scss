@@ -1,0 +1,51 @@
+.category-wrapper {
+    height: 100vh;
+    margin-top: 2rem;
+    padding: .5rem 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-gap: 0.5rem;
+    row-gap: 1rem;
+    .categorybox {
+        height: 100%;
+        background-color: #e7e7e7;
+        .cat-title {
+            background-color: #F1F2F4;
+            padding: 8px 0 8px 1rem;
+        }
+        .ticket-card {
+            border: 1px solid #e7e7e7;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            background-color: #fff;
+        }
+    }
+}
+
+.high {
+    background-color: #ff3a3a;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px;
+    width: fit-content;
+    border-radius: 3px;
+}
+
+.medium {
+    background-color: #b6c815;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px;
+    width: fit-content;
+    border-radius: 3px;
+}
+
+.low {
+    background-color: #008cff;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px;
+    width: fit-content;
+    border-radius: 3px;
+}

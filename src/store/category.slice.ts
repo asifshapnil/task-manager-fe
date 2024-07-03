@@ -10,7 +10,7 @@ const initialState: any = {
 export const getCategories: any = createAsyncThunk(
     "content/getCategories",
     async () => {
-        const res = await axios.get(`http://dummy.restapiexample.com/api/v1/employees`);
+        const res = await axios.get(`/categories`);
         const data = await res.data;
         return data;
     }
@@ -27,7 +27,7 @@ export const categorySlice = createSlice({
         });
         builder.addCase(getCategories.fulfilled, (state: any, action: any) => {
             state.isLoading = false;
-            state.employees = action.payload.data;
+            state.categories = action.payload;
         });
         builder.addCase(getCategories.rejected, (state: any, action: any) => {
             state.isLoading = false;

@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
-import { removeToken, setToken } from "./auth.service";
+import { getUserInfo, removeToken, setToken } from "./auth.service";
 
 var numberOfAjaxCAllPending = 0;
 const cookies = new Cookies();
@@ -18,7 +18,7 @@ const axiosInstance = axios.create({
 const refreshAccessToken = async () => {
   try {
     const refreshToken = cookies.get("refresh_token");
-    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/refresh`, { refresh_token: refreshToken }, {
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/users/refresh`, { email: getUserInfo().email, refresh_token: refreshToken }, {
       headers: {
         Authorization: `bearer ${refreshToken}`
       }
