@@ -16,6 +16,15 @@ export const getCategories: any = createAsyncThunk(
     }
 );
 
+export const postCategories: any = createAsyncThunk(
+    "content/postCategories",
+    async (payload: any) => {
+        const res = await axios.post(`/categories`, payload);
+        const data = await res.data;
+        return data;
+    }
+);
+
 export const categorySlice = createSlice({
     name: "categories",
     initialState,
@@ -30,6 +39,17 @@ export const categorySlice = createSlice({
             state.categories = action.payload;
         });
         builder.addCase(getCategories.rejected, (state: any, action: any) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(postCategories.pending, (state: any) => {
+            state.isLoading = true;
+        });
+        builder.addCase(postCategories.fulfilled, (state: any, action: any) => {
+            state.isLoading = false;
+            state.categories = action.payload;
+        });
+        builder.addCase(postCategories.rejected, (state: any, action: any) => {
             state.isLoading = false;
             state.error = action.error.message;
         });
