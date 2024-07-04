@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { getNotifications } from "../../store/notification.slice";
 import { ListGroup } from "react-bootstrap";
 import moment from "moment";
+import './notification.scss';
 
 const NotificationComponent = () => {
     const dispatch = useDispatch();
