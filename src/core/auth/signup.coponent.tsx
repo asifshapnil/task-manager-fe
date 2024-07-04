@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { signUp } from "../../store/auth.slice";
 import { useSelector } from "react-redux";
+import TextLogo from "../common/textlogo.component";
 
 const SignUpComponent = () => {
     const dispatch = useDispatch();
@@ -63,25 +64,9 @@ const SignUpComponent = () => {
         <div className="d-flex" style={{ height: '100vh' }}>
             <div style={{ width: '60%', backgroundColor: '#25B0EA' }} className="d-flex align-items-center p-3">
                 <div className="p-3">
-                    <span style={{
-                        fontSize: '40px',
-                        fontFamily: 'monospace',
-                        fontWeight: '700',
-                        color: '#fff',
-                        letterSpacing: '5px'
-                    }}>
-                        Task
-                    </span>
-                    <span style={{
-                        fontSize: '20px',
-                        fontFamily: 'sans-serif',
-                        fontWeight: '700',
-                        color: '#fff',
-                        marginLeft: '.5rem',
-                        letterSpacing: '5px'
-                    }}>
-                        Manager
-                    </span>
+                <div className="p-3">
+                    <TextLogo />
+                </div>
                 </div>
             </div>
             <div className="d-flex justify-content-center align-items-center" style={{ flex: 1 }}>

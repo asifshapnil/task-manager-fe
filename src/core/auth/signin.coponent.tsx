@@ -5,6 +5,7 @@ import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { signIn } from "../../store/auth.slice";
 import { useNavigate } from "react-router-dom";
+import TextLogo from "../common/textlogo.component";
 
 const SignInComponent = () => {
     const navigate = useNavigate();
@@ -62,25 +63,7 @@ const SignInComponent = () => {
         <div className="d-flex" style={{ height: '100vh' }}>
             <div style={{ width: '60%', backgroundColor: '#25B0EA' }} className="d-flex align-items-center p-3">
                 <div className="p-3">
-                    <span style={{
-                        fontSize: '40px',
-                        fontFamily: 'monospace',
-                        fontWeight: '700',
-                        color: '#fff',
-                        letterSpacing: '5px'
-                    }}>
-                        Task
-                    </span>
-                    <span style={{
-                        fontSize: '20px',
-                        fontFamily: 'sans-serif',
-                        fontWeight: '700',
-                        color: '#fff',
-                        marginLeft: '.5rem',
-                        letterSpacing: '5px'
-                    }}>
-                        Manager
-                    </span>
+                    <TextLogo />
                 </div>
             </div>
             <div className="d-flex justify-content-center align-items-center" style={{ flex: 1 }}>

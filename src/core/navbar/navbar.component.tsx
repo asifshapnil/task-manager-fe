@@ -7,6 +7,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import NotificationComponent from "../notification/notification.component";
 import { getNotifications } from "../../store/notification.slice";
+import TextLogo from "../common/textlogo.component";
 
 const NavbarComponent = () => {
     const dispatch = useDispatch();
@@ -47,29 +48,7 @@ const NavbarComponent = () => {
             >
                 <Container>
                     <Navbar.Brand as={NavLink} to="/task-manager">
-                        <div>
-                            <div className="">
-                                <span style={{
-                                    fontSize: '40px',
-                                    fontFamily: 'monospace',
-                                    fontWeight: '700',
-                                    color: '#fff',
-                                    letterSpacing: '5px'
-                                }}>
-                                    Task
-                                </span>
-                                <span style={{
-                                    fontSize: '20px',
-                                    fontFamily: 'sans-serif',
-                                    fontWeight: '700',
-                                    color: '#fff',
-                                    marginLeft: '.5rem',
-                                    letterSpacing: '5px'
-                                }}>
-                                    Manager
-                                </span>
-                            </div>
-                        </div>
+                        <TextLogo />
                     </Navbar.Brand>
                     <Nav className="d-flex justif-content-end">
                         <Nav.Link
