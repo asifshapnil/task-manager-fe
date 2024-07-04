@@ -26,6 +26,17 @@ export const postTicket: any = createAsyncThunk(
     }
 );
 
+export const updateTicket: any = createAsyncThunk(
+    "content/updateTicket",
+    async (payload: any) => {
+        const id = payload.id;
+        delete payload.id;
+        const res = await axios.put(`/tickets/${id}`, payload);
+        const data = await res.data;
+        return data;
+    }
+);
+
 export const ticketSlice = createSlice({
     name: "ticket",
     initialState,
@@ -51,6 +62,17 @@ export const ticketSlice = createSlice({
             state.categories = action.payload;
         });
         builder.addCase(postTicket.rejected, (state: any, action: any) => {
+            state.isLoading = false;
+            state.error = action.error.message;
+        });
+        builder.addCase(updateTicket.pending, (state: any) => {
+            state.isLoading = true;
+        });
+        builder.addCase(updateTicket.fulfilled, (state: any, action: any) => {
+            state.isLoading = false;
+            state.categories = action.payload;
+        });
+        builder.addCase(updateTicket.rejected, (state: any, action: any) => {
             state.isLoading = false;
             state.error = action.error.message;
         });

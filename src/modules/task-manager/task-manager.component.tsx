@@ -106,7 +106,7 @@ const TaskManagerComponent = () => {
                             {cat.tickets.length ? <>
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card">
-                                        <div className="" style={{cursor: 'pointer'}} onClick={() => setSelectedTicket(ticket)}>
+                                        <div className="" style={{cursor: 'pointer'}} onClick={() => {setSelectedTicket(ticket); setSelectedCategoryId(cat.id)}}>
                                             {ticket.title}
                                         </div>
                                         <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-2`}>

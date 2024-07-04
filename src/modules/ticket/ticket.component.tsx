@@ -2,7 +2,7 @@ import { createRef, forwardRef, useEffect, useImperativeHandle, useState } from 
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { getTicket, postTicket } from "../../store/ticket.slice";
+import { getTicket, postTicket, updateTicket } from "../../store/ticket.slice";
 import { getCategories } from "../../store/category.slice";
 import { useSelector } from "react-redux";
 
@@ -73,11 +73,19 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTic
                     const { title } = form.values;
                     if (!title) return;
 
-                    dispatch(postTicket({...form.values, category: {
-                        id: selectedCategoryId
-                    }})).then(() => {
-                        onRefetchCategory();
-                    });
+                    if(selectedTicket) {
+                        dispatch(postTicket({...form.values, category: {
+                            id: selectedCategoryId
+                        }})).then(() => {
+                            onRefetchCategory();
+                        });
+                    } else {
+                        dispatch(updateTicket({...form.values, id: selectedTicket.id, category: {
+                            id: selectedCategoryId
+                        }})).then(() => {
+                            onRefetchCategory();
+                        });
+                    }
                 }
             }
         }
