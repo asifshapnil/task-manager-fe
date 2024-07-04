@@ -7,12 +7,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ModalComponent from "../../shared/modal/modal.component";
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component";
 import * as yup from "yup";
+import TicketComponent from "../ticket/ticket.component";
 
 const TaskManagerComponent = () => {
     const dispatch = useDispatch();
     const formRef = createRef();
+    const ticketRefernce: any = createRef();
     const categories = useSelector((state: any) => state.categories.categories);
     const [isShowModal, setIsShowModal] = useState(false);
+    const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
+    const [selectedTicket, setSelectedTicket] = useState(null as any);
 
     const [initialValues, setInitialValues] = useState<any>({
         name: "",
@@ -53,8 +57,13 @@ const TaskManagerComponent = () => {
         }
     }
 
+    const onSubmitTicket = () => {
+        ticketRefernce.current?.onSubmit();
+    }
+
     const handleCloseModal = () => {
         setIsShowModal(false);
+        setIsTicketModalOpen(false);
     }
 
     const modalActionConfig = [
@@ -64,14 +73,22 @@ const TaskManagerComponent = () => {
             variant: "primary",
         },
     ]
+    const modalActionConfigForTicket = [
+        {
+            label: "Save",
+            event: onSubmitTicket,
+            variant: "primary",
+        },
+    ]
 
     useEffect(() => {
         dispatch(getCategories());
     }, [])
 
     useEffect(() => {
-        console.log(categories);
-    }, [categories])
+        if(!selectedTicket) return;
+        setIsTicketModalOpen(true);
+    }, [selectedTicket])
 
     return <>
         <div className="d-flex">
@@ -79,12 +96,15 @@ const TaskManagerComponent = () => {
                 {categories?.length ? <>
                     {categories?.map((cat: any) => (
                         <div className="categorybox">
-                            <div className="cat-title">{cat.name}</div>
+                            <div className="cat-title d-flex justify-content-between align-items-center">
+                                {cat.name}
+                                <FontAwesomeIcon onClick={() => setIsTicketModalOpen(true)} icon={faAdd} className="fs-7 me-2" style={{cursor: 'pointer'}} />
+                            </div>
 
                             {cat.tickets.length ? <>
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card">
-                                        <div>
+                                        <div className="" style={{cursor: 'pointer'}} onClick={() => setSelectedTicket(ticket)}>
                                             {ticket.title}
                                         </div>
                                         <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-2`}>
@@ -114,7 +134,7 @@ const TaskManagerComponent = () => {
         <ModalComponent
             showModal={isShowModal}
             handleClose={handleCloseModal}
-            headerTitle='Add Category'
+            headerTitle='Add new category'
             actionConfig={modalActionConfig}
         >
             <FormBuilderComponent
@@ -123,6 +143,15 @@ const TaskManagerComponent = () => {
                 validation={validationSchema}
                 formConfig={formConfiguration}
             />
+        </ModalComponent>
+
+        <ModalComponent
+            showModal={isTicketModalOpen}
+            handleClose={handleCloseModal}
+            headerTitle={selectedTicket ? selectedTicket?.title : 'Add new ticket'}
+            actionConfig={modalActionConfigForTicket}
+        >
+            <TicketComponent reference={ticketRefernce} />
         </ModalComponent>
     </>
 }
