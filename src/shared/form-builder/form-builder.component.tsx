@@ -1,6 +1,7 @@
 import { ErrorMessage, Formik } from "formik";
-import { FC, useEffect, useRef, useState } from "react";
-import { Form, Spinner} from "react-bootstrap";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
+import { Form, Spinner } from "react-bootstrap";
+import JoditEditor, { IJoditEditorProps } from 'jodit-react';
 import "./form-builder.scss";
 import { useDispatch } from "react-redux";
 import { faEye, faEyeSlash, faTimes } from "@fortawesome/free-solid-svg-icons";
@@ -25,7 +26,8 @@ export interface Control {
   | "select"
   | "password"
   | "chips"
-  | "file";
+  | "file"
+  | "texteditor";
   required?: boolean;
   readOnly?: boolean;
   disabled?: boolean;
@@ -83,6 +85,22 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
     setShowPassword((prevState) => !prevState);
   }
 
+  const editor = useRef(null);
+  const [content, setContent] = useState('');
+
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: 'Start typings...',
+      uploader: {
+        "insertImageAsBase64URI": true
+      },
+      buttons:
+        'underline,strikethrough,eraser,ul,ol,font,fontsize,paragraph,classSpan,lineHeight,superscript,subscript,file,image,video,speechRecognize,spellcheck,cut',
+    }),
+    []
+  );
+
 
   return (
     <div>
@@ -114,9 +132,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -175,9 +193,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -226,9 +244,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -295,9 +313,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -376,9 +394,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -424,13 +442,44 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                                 </div>
                               </div>
                             );
+                          case "texteditor":
+                            return (
+                              <div
+                                className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
+                                  }`}
+                              >
+                                <div className="mb-2">
+                                  {control.label}
+                                  {control.required && (
+                                    <span className="text-danger">*</span>
+                                  )}
+                                </div>
+                                <div className="">
+                                  <JoditEditor
+                                    ref={editor}
+                                    value={content}
+                                    config={config}
+                                    onBlur={(newContent: any) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                                    onChange={(newContent: any) => { 
+                                      setFieldValue(
+                                        control?.name,
+                                        newContent
+                                      );
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            );
                           case "date":
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -481,9 +530,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -539,9 +588,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -590,9 +639,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -650,9 +699,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">
@@ -709,9 +758,9 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                             return (
                               <div
                                 className={`flex flex-column mt-3 mb-3 ${control.hasOwnProperty("display") &&
-                                    !control.display
-                                    ? "d-none"
-                                    : ""
+                                  !control.display
+                                  ? "d-none"
+                                  : ""
                                   }`}
                               >
                                 <div className="mb-2">

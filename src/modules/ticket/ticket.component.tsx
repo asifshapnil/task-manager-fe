@@ -17,6 +17,13 @@ const TicketComponent = forwardRef(({ reference }: any) => {
                 placeholder: "",
                 type: "text",
                 required: true,
+            },
+            {
+                name: "description",
+                label: "Description",
+                placeholder: "",
+                type: "texteditor",
+                required: true,
             }
         ]
     }
