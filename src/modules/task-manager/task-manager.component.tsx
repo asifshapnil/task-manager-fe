@@ -9,6 +9,7 @@ import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form
 import * as yup from "yup";
 import TicketComponent from "../ticket/ticket.component";
 import { updateTicket } from "../../store/ticket.slice";
+import moment from "moment";
 
 const TaskManagerComponent = () => {
     const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const TaskManagerComponent = () => {
     }, [])
 
     useEffect(() => {
-        if(!selectedTicket) return;
+        if (!selectedTicket) return;
         setIsTicketModalOpen(true);
     }, [selectedTicket])
 
@@ -97,54 +98,66 @@ const TaskManagerComponent = () => {
         console.log(categoryId);
         console.log(targetCategoryId);
         console.log(ticket);
-        dispatch(updateTicket({...ticket, category: {
-            id: targetCategoryId
-        }})).then(() => {
+        dispatch(updateTicket({
+            ...ticket, category: {
+                id: targetCategoryId
+            }
+        })).then(() => {
             dispatch(getCategories());
         })
-        
+
     }
 
     const handleDragStart = (event: any, ticket: any, categoryId: any) => {
         event.dataTransfer.setData('text/plain', JSON.stringify({ ticket, categoryId }));
-      };
-    
-      const handleDragOver = (event: any) => {
-        event.preventDefault();
-      };
+    };
 
-      const handleDrop = (event: any, targetCategoryId: any) => {
+    const handleDragOver = (event: any) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = (event: any, targetCategoryId: any) => {
         event.preventDefault();
         const data = event.dataTransfer.getData('text/plain');
         const { ticket, categoryId } = JSON.parse(data);
 
-        moveTicket(ticket, categoryId, targetCategoryId);      
-      };
-    
+        moveTicket(ticket, categoryId, targetCategoryId);
+    };
+
 
     return <>
         <div className="d-flex">
             <div className="category-wrapper" style={{ width: '98%' }}>
                 {categories?.length ? <>
                     {categories?.map((cat: any) => (
-                        <div className="categorybox" onDragOver={(event:any) => handleDragOver(event)}
-                        onDrop={(event) => handleDrop(event, cat.id)}>
+                        <div className="categorybox" onDragOver={(event: any) => handleDragOver(event)}
+                            onDrop={(event) => handleDrop(event, cat.id)}>
                             <div className="cat-title d-flex justify-content-between align-items-center">
                                 {cat.name}
-                                <FontAwesomeIcon onClick={() => {setIsTicketModalOpen(true); setSelectedCategoryId(cat.id)}} icon={faAdd} className="fs-7 me-2" style={{cursor: 'pointer'}} />
+                                <FontAwesomeIcon onClick={() => { setIsTicketModalOpen(true); setSelectedCategoryId(cat.id) }} icon={faAdd} className="fs-7 me-2" style={{ cursor: 'pointer' }} />
                             </div>
 
                             {cat.tickets.length ? <>
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card" draggable
-                                    onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
-                                        <div className="" style={{cursor: 'pointer'}} onClick={() => {setSelectedTicket(ticket); setSelectedCategoryId(cat.id)}}>
+                                        onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
+                                        <div className="" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(ticket); setSelectedCategoryId(cat.id) }}>
                                             {ticket.title}
                                         </div>
-                                        <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-2`}>
+                                        <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-1`}>
                                             Priority:
                                             <span className="ms-2">
                                                 {ticket.priority}
+                                            </span>
+                                        </div>
+                                        <div className="exdate">
+                                            Expires in:
+                                            <span className="ms-2">
+                                                {ticket.expirydate ? <>
+                                                    {moment(ticket.expirydate).format(
+                                                        "DD-MM-YYYY "
+                                                    )}
+                                                </>: 'Not added'}
                                             </span>
                                         </div>
                                     </div>
@@ -185,9 +198,9 @@ const TaskManagerComponent = () => {
             headerTitle={selectedTicket ? selectedTicket?.title : 'Add new ticket'}
             actionConfig={modalActionConfigForTicket}
         >
-            <TicketComponent reference={ticketRefernce} 
-            selectedCategoryId={selectedCategoryId}
-            selectedTicket={selectedTicket} />
+            <TicketComponent reference={ticketRefernce}
+                selectedCategoryId={selectedCategoryId}
+                selectedTicket={selectedTicket} />
         </ModalComponent>
     </>
 }

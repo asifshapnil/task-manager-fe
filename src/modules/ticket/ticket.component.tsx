@@ -25,6 +25,13 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTic
                 required: true,
             },
             {
+                name: "expirydate",
+                label: "Expiry Date",
+                placeholder: "",
+                type: "date",
+                required: true,
+            },
+            {
                 name: "priority",
                 label: "Priority",
                 placeholder: "",
