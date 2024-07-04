@@ -5,6 +5,7 @@ const initialState: any = {
     tickets: [],
     ticketDetail: {},
     isLoading: false,
+    isLoadingTicket: false,
     error: null,
 };
 
@@ -44,14 +45,14 @@ export const ticketSlice = createSlice({
     },
     extraReducers: (builder: any) => {
         builder.addCase(getTicket.pending, (state: any) => {
-            state.isLoading = true;
+            state.isLoadingTicket = true;
         });
         builder.addCase(getTicket.fulfilled, (state: any, action: any) => {
-            state.isLoading = false;
+            state.isLoadingTicket = false;
             state.ticketDetail = action.payload;
         });
         builder.addCase(getTicket.rejected, (state: any, action: any) => {
-            state.isLoading = false;
+            state.isLoadingTicket = false;
             state.error = action.error.message;
         });
         builder.addCase(postTicket.pending, (state: any) => {

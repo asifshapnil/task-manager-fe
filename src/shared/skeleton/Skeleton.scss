@@ -1,0 +1,42 @@
+// Skeleton.scss
+@keyframes glow {
+  0% {
+    background-color: #c2c2c2;
+  }
+  50% {
+    background-color: #f0f0f0;
+  }
+  100% {
+    background-color: #c2c2c2;
+  }
+}
+
+.skeleton {
+  border-radius: 4px;
+  display: inline-block;
+  line-height: 1;
+  overflow: hidden;
+  position: relative;
+
+  background-color: #c9c9c9;
+
+  &:before {
+    content: "\00a0";
+    white-space: pre;
+    display: block;
+    width: 100%;
+    height: 100%;
+    animation: glow 2s linear infinite;
+  }
+
+  &.text:before {
+    content: "\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+  }
+
+  &.circular,
+  &.rectangular,
+  &.rounded {
+    width: 100%;
+    height: 100%;
+  }
+}

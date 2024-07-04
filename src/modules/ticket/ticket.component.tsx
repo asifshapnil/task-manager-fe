@@ -5,11 +5,14 @@ import { useDispatch } from "react-redux";
 import { getTicket, postTicket, updateTicket } from "../../store/ticket.slice";
 import { getCategories } from "../../store/category.slice";
 import { useSelector } from "react-redux";
+import SkeletonComponent from "../../shared/skeleton/skeleton.component";
 
-const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTicket}: any) => {
+const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTicket }: any) => {
     const dispatch = useDispatch();
     const formRef = createRef();
     const ticketDetail = useSelector((state: any) => state.ticket.ticketDetail);
+    const isLoadingTicket = useSelector((state: any) => state.ticket.isLoadingTicket);
+    
     const [initialValues, setInitialValues] = useState<any>({
         title: "",
         description: "",
@@ -80,16 +83,20 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTic
                     const { title } = form.values;
                     if (!title) return;
 
-                    if(selectedTicket) {
-                        dispatch(postTicket({...form.values, category: {
-                            id: selectedCategoryId
-                        }})).then(() => {
+                    if (selectedTicket) {
+                        dispatch(postTicket({
+                            ...form.values, category: {
+                                id: selectedCategoryId
+                            }
+                        })).then(() => {
                             onRefetchCategory();
                         });
                     } else {
-                        dispatch(updateTicket({...form.values, id: selectedTicket.id, category: {
-                            id: selectedCategoryId
-                        }})).then(() => {
+                        dispatch(updateTicket({
+                            ...form.values, id: selectedTicket.id, category: {
+                                id: selectedCategoryId
+                            }
+                        })).then(() => {
                             onRefetchCategory();
                         });
                     }
@@ -99,24 +106,31 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTic
     })
 
     useEffect(() => {
-        if(!selectedTicket) return;
+        if (!selectedTicket) return;
         dispatch(getTicket(selectedTicket.id));
     }, [selectedTicket])
 
     useEffect(() => {
-        if(ticketDetail) {
+        if (ticketDetail) {
             setInitialValues(ticketDetail);
         }
     }, [ticketDetail])
 
     return <>
         <div>
-            <FormBuilderComponent
-                formRef={formRef}
-                initialValues={initialValues}
-                validation={validationSchema}
-                formConfig={formConfiguration}
-            />
+            <SkeletonComponent
+                wrapperHeight="380px"
+                skeletonHeight="50px"
+                isLoading={selectedTicket ? isLoadingTicket : false}
+                count={6}
+            >
+                <FormBuilderComponent
+                    formRef={formRef}
+                    initialValues={initialValues}
+                    validation={validationSchema}
+                    formConfig={formConfiguration}
+                />
+            </SkeletonComponent>
         </div>
     </>
 })
