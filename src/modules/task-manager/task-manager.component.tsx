@@ -141,7 +141,7 @@ const TaskManagerComponent = () => {
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card" draggable
                                         onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
-                                        <div className="" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(ticket); setSelectedCategoryId(cat.id) }}>
+                                        <div className="title" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(ticket); setSelectedCategoryId(cat.id) }}>
                                             {ticket.title}
                                         </div>
                                         <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-1`}>

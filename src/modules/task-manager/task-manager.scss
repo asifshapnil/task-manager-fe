@@ -23,6 +23,10 @@
             margin: 10px;
             background-color: #fff;
 
+            .title:hover {
+                text-decoration: underline;
+            }
+
             .exdate {
                 font-size: 11px;
                 color: #939393;
