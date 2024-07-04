@@ -8,6 +8,7 @@ import ModalComponent from "../../shared/modal/modal.component";
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component";
 import * as yup from "yup";
 import TicketComponent from "../ticket/ticket.component";
+import { updateTicket } from "../../store/ticket.slice";
 
 const TaskManagerComponent = () => {
     const dispatch = useDispatch();
@@ -92,12 +93,42 @@ const TaskManagerComponent = () => {
         setIsTicketModalOpen(true);
     }, [selectedTicket])
 
+    const moveTicket = (ticket: any, categoryId: any, targetCategoryId: any) => {
+        console.log(categoryId);
+        console.log(targetCategoryId);
+        console.log(ticket);
+        dispatch(updateTicket({...ticket, category: {
+            id: targetCategoryId
+        }})).then(() => {
+            dispatch(getCategories());
+        })
+        
+    }
+
+    const handleDragStart = (event: any, ticket: any, categoryId: any) => {
+        event.dataTransfer.setData('text/plain', JSON.stringify({ ticket, categoryId }));
+      };
+    
+      const handleDragOver = (event: any) => {
+        event.preventDefault();
+      };
+
+      const handleDrop = (event: any, targetCategoryId: any) => {
+        event.preventDefault();
+        const data = event.dataTransfer.getData('text/plain');
+        const { ticket, categoryId } = JSON.parse(data);
+
+        moveTicket(ticket, categoryId, targetCategoryId);      
+      };
+    
+
     return <>
         <div className="d-flex">
             <div className="category-wrapper" style={{ width: '98%' }}>
                 {categories?.length ? <>
                     {categories?.map((cat: any) => (
-                        <div className="categorybox">
+                        <div className="categorybox" onDragOver={(event:any) => handleDragOver(event)}
+                        onDrop={(event) => handleDrop(event, cat.id)}>
                             <div className="cat-title d-flex justify-content-between align-items-center">
                                 {cat.name}
                                 <FontAwesomeIcon onClick={() => {setIsTicketModalOpen(true); setSelectedCategoryId(cat.id)}} icon={faAdd} className="fs-7 me-2" style={{cursor: 'pointer'}} />
@@ -105,7 +136,8 @@ const TaskManagerComponent = () => {
 
                             {cat.tickets.length ? <>
                                 {cat.tickets.map((ticket: any) => (
-                                    <div className="ticket-card">
+                                    <div className="ticket-card" draggable
+                                    onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
                                         <div className="" style={{cursor: 'pointer'}} onClick={() => {setSelectedTicket(ticket); setSelectedCategoryId(cat.id)}}>
                                             {ticket.title}
                                         </div>
