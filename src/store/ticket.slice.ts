@@ -11,11 +11,7 @@ const initialState: any = {
 export const getTicket: any = createAsyncThunk(
     "content/getTicket",
     async (id: number) => {
-        const res = await axios.get(`/tickets`, {
-            params: {
-                id: id
-            }
-        });
+        const res = await axios.get(`/tickets/${id}`);
         const data = await res.data;
         return data;
     }
@@ -41,7 +37,7 @@ export const ticketSlice = createSlice({
         });
         builder.addCase(getTicket.fulfilled, (state: any, action: any) => {
             state.isLoading = false;
-            state.categories = action.payload;
+            state.ticketDetail = action.payload;
         });
         builder.addCase(getTicket.rejected, (state: any, action: any) => {
             state.isLoading = false;

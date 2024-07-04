@@ -1,13 +1,15 @@
-import { createRef, forwardRef, useImperativeHandle, useState } from "react";
+import { createRef, forwardRef, useEffect, useImperativeHandle, useState } from "react";
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
-import { postTicket } from "../../store/ticket.slice";
+import { getTicket, postTicket } from "../../store/ticket.slice";
 import { getCategories } from "../../store/category.slice";
+import { useSelector } from "react-redux";
 
-const TicketComponent = forwardRef(({ reference, selectedCategoryId }: any) => {
+const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTicket}: any) => {
     const dispatch = useDispatch();
     const formRef = createRef();
+    const ticketDetail = useSelector((state: any) => state.ticket.ticketDetail);
     const [initialValues, setInitialValues] = useState<any>({
         title: "",
         description: "",
@@ -80,6 +82,17 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId }: any) => {
             }
         }
     })
+
+    useEffect(() => {
+        if(!selectedTicket) return;
+        dispatch(getTicket(selectedTicket.id));
+    }, [selectedTicket])
+
+    useEffect(() => {
+        if(ticketDetail) {
+            setInitialValues(ticketDetail);
+        }
+    }, [ticketDetail])
 
     return <>
         <div>

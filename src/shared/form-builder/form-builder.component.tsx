@@ -101,6 +101,20 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
     []
   );
 
+  useEffect(() => {
+    if (Object.keys(initialValues).length && Object.keys(formConfig).length) {
+      const texteditorControl: any = formConfig.controls.find(
+        (control: any) => control.type === "texteditor"
+      );
+
+      if (texteditorControl) {
+        // pushing the existing values to the selected items
+        const value = initialValues[texteditorControl.name];
+        setContent(value);
+      }
+    }
+  }, [initialValues, formConfig])
+
 
   return (
     <div>

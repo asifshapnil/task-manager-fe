@@ -153,7 +153,9 @@ const TaskManagerComponent = () => {
             headerTitle={selectedTicket ? selectedTicket?.title : 'Add new ticket'}
             actionConfig={modalActionConfigForTicket}
         >
-            <TicketComponent reference={ticketRefernce} selectedCategoryId={selectedCategoryId} />
+            <TicketComponent reference={ticketRefernce} 
+            selectedCategoryId={selectedCategoryId}
+            selectedTicket={selectedTicket} />
         </ModalComponent>
     </>
 }
