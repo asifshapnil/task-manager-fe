@@ -17,6 +17,7 @@ const TaskManagerComponent = () => {
     const [isShowModal, setIsShowModal] = useState(false);
     const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null as any);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null as any);
 
     const [initialValues, setInitialValues] = useState<any>({
         name: "",
@@ -59,6 +60,7 @@ const TaskManagerComponent = () => {
 
     const onSubmitTicket = () => {
         ticketRefernce.current?.onSubmit();
+        handleCloseModal();
     }
 
     const handleCloseModal = () => {
@@ -98,7 +100,7 @@ const TaskManagerComponent = () => {
                         <div className="categorybox">
                             <div className="cat-title d-flex justify-content-between align-items-center">
                                 {cat.name}
-                                <FontAwesomeIcon onClick={() => setIsTicketModalOpen(true)} icon={faAdd} className="fs-7 me-2" style={{cursor: 'pointer'}} />
+                                <FontAwesomeIcon onClick={() => {setIsTicketModalOpen(true); setSelectedCategoryId(cat.id)}} icon={faAdd} className="fs-7 me-2" style={{cursor: 'pointer'}} />
                             </div>
 
                             {cat.tickets.length ? <>
@@ -151,7 +153,7 @@ const TaskManagerComponent = () => {
             headerTitle={selectedTicket ? selectedTicket?.title : 'Add new ticket'}
             actionConfig={modalActionConfigForTicket}
         >
-            <TicketComponent reference={ticketRefernce} />
+            <TicketComponent reference={ticketRefernce} selectedCategoryId={selectedCategoryId} />
         </ModalComponent>
     </>
 }

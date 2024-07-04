@@ -2,20 +2,45 @@ import { createRef, forwardRef, useImperativeHandle, useState } from "react";
 import FormBuilderComponent, { FormConfig } from "../../shared/form-builder/form-builder.component";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
+import { postTicket } from "../../store/ticket.slice";
+import { getCategories } from "../../store/category.slice";
 
-const TicketComponent = forwardRef(({ reference }: any) => {
+const TicketComponent = forwardRef(({ reference, selectedCategoryId }: any) => {
     const dispatch = useDispatch();
     const formRef = createRef();
     const [initialValues, setInitialValues] = useState<any>({
-        name: "",
+        title: "",
+        description: "",
+        priority: "",
     });
     const formConfiguration: FormConfig = {
         controls: [
             {
-                name: "name",
-                label: "Category Name",
+                name: "title",
+                label: "Title",
                 placeholder: "",
                 type: "text",
+                required: true,
+            },
+            {
+                name: "priority",
+                label: "Priority",
+                placeholder: "",
+                type: "select",
+                options: [
+                    {
+                        label: 'High',
+                        value: 'high'
+                    },
+                    {
+                        label: 'Medium',
+                        value: 'medium'
+                    },
+                    {
+                        label: 'Low',
+                        value: 'low'
+                    },
+                ],
                 required: true,
             },
             {
@@ -29,23 +54,28 @@ const TicketComponent = forwardRef(({ reference }: any) => {
     }
 
     const validationSchema = yup.object().shape({
-        name: yup.string().required('Category name is required')
+        title: yup.string().required('Title is required'),
     });
+
+    const onRefetchCategory = () => {
+        dispatch(getCategories());
+    }
 
     useImperativeHandle(reference, () => {
         return {
             onSubmit: () => {
-                debugger
                 const form: any = formRef.current;
 
                 if (form) {
                     form.handleSubmit();
-                    const { name } = form.values;
-                    if (!name) return;
+                    const { title } = form.values;
+                    if (!title) return;
 
-                    // dispatch(postCategories(form.values)).then(() => {
-                    //     onRefetch();
-                    // });
+                    dispatch(postTicket({...form.values, category: {
+                        id: selectedCategoryId
+                    }})).then(() => {
+                        onRefetchCategory();
+                    });
                 }
             }
         }
