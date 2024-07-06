@@ -111,7 +111,6 @@ const TicketComponent = forwardRef(({
                                 id: selectedCategoryId
                             }
                         })).then((data: any) => {
-                            console.log(data);
                             if(data) {
                                 const tickethistoryData = {
                                     action: `added the ticket`,
@@ -153,7 +152,6 @@ const TicketComponent = forwardRef(({
     })
 
     useEffect(() => {
-        console.log(selectedTicket);
         if (selectedTicket) {
             dispatch(getTicket(selectedTicket.id));
         } else {
@@ -162,7 +160,6 @@ const TicketComponent = forwardRef(({
     }, [selectedTicket])
 
     useEffect(() => {
-        console.log(isTicketEditModeEnabled);
 
     }, [isTicketEditModeEnabled])
 

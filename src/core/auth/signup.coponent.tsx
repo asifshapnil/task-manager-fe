@@ -55,9 +55,7 @@ const SignUpComponent = () => {
         }
     }
 
-    useEffect(() => {
-        console.log(isLoadingSignup);
-        
+    useEffect(() => {        
     }, [isLoadingSignup])
 
     return <>

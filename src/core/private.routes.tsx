@@ -16,7 +16,6 @@ const PrivateRoute: FC<Props> = ({
         const checkLogin = async () => {
              
             const isLoggedIn: boolean = await getLoginStatus();
-            console.log(isLoggedIn);
 
             setIsLoggedIn(isLoggedIn);
             setLoginChecked(true);

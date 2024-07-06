@@ -37,7 +37,6 @@ const ModalComponent: FC<ModalComponentProps> = ({
         handleClose
           ? handleClose
           : () => {
-              console.log("");
             }
       }
       size={size}
