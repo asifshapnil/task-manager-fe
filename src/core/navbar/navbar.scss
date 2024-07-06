@@ -1,0 +1,49 @@
+.nav-link {
+    color: #fff !important;
+}
+
+.nav-link.active {
+    color: #f4f4f4 !important;
+}
+
+.notification-nav {
+    position: relative;
+}
+
+.notification {
+    width: 500px;
+    padding: 1rem;
+    position: absolute;
+    z-index: 9999;
+    right: -46px;
+    top: 55px;
+    border-radius: 5px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    background-color: #ffffff;
+    box-shadow: 4px 4px 11px #888888;
+    word-break: break-all;
+    border-top: 5px solid #1976D2;
+}
+
+.notificationcountwrapper {
+    position: relative;
+
+    .count {
+        position: absolute;
+        top: 6px;
+        left: 15px;
+    }
+}
+
+//   .notification::before {
+//     content: "";
+//     position: absolute;
+//     bottom: 100%;
+//     left: 326px;
+//     margin-left: -10px;
+//     border-width: 25px 25px 0;
+//     border-style: solid;
+//     border-color: #1976D2 transparent transparent transparent;
+//     transform: rotate(180deg);
+//   }

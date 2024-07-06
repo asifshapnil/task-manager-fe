@@ -1,0 +1,92 @@
+.image-size {
+  max-width: 300px;
+  max-height: 300px;
+}
+
+.close-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 50px;
+  color: red;
+}
+
+input[type="date"],
+input[type="datetime-local"] {
+  // color: #ffffff !important;
+
+  &::before {
+    color: #212529 !important;
+    content: attr(placeholder) !important;
+  }
+
+  &:focus,
+  &:valid {
+    color: #212529 !important;
+
+    &::before {
+      content: "" !important;
+      color: #212529 !important;
+    }
+  }
+}
+.multiselectDisabled {
+  opacity: 1 !important;
+  input {
+    display: none;
+  }
+  .chip {
+    background-color: #0096fb;
+  }
+}
+
+.error-message {
+  color: #DC3545;
+  font-size: 12px;
+}
+
+
+
+/* input[type="datetime-local"] {
+  // color: #ffffff !important;
+
+  &::before {
+    color: #212529 !important;
+    content: attr(placeholder) !important;
+  }
+
+  &:focus,
+  &:valid {
+    color: #212529 !important;
+
+    &::before {
+      content: "" !important;
+      color: #212529 !important;
+    }
+  }
+} */
+
+//  /* update color & background for today date */
+//  .slds-datepicker tbody>tr>td.slds-is-today>.slds-day {
+//   background: green;
+//   color: blue;
+// }
+
+// /* update color & background for selected date */
+// .slds-datepicker tbody>tr>td.slds-is-selected>.slds-day {
+//   background: red;
+//   color: pink;
+//   font-weight: 700;
+// }
+
+// /* update color & background for hover date */
+// .slds-datepicker tbody>tr>td:hover span {
+//   background: red !important;
+// } 
+
