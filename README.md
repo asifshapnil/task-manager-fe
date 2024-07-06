@@ -6,6 +6,7 @@ This project is a task manager application built with React.js, utilizing featur
 NB: Not need to wory about .env added that to git. 
 
 Features
+----------------------------------------------------------------------------------------------
 Category Management:
 Create categories.
 Ticket Management:
@@ -28,6 +29,7 @@ JWT: JSON Web Tokens for secure authentication.
 HTML5 Drag and Drop: API for handling drag and drop interactions.
 Yup: JavaScript schema builder for value parsing and validation.
 Bootstrap CSS framework for styling components.
+
 ------------------------------------------------------------------------------------
 Getting Started
 ------------------------------------------------------------------------------------
