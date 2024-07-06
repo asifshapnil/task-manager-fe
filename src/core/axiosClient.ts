@@ -24,7 +24,7 @@ const refreshAccessToken = async () => {
       }
     });
     cookies.set("refresh_token", response.data.refresh_token, { path: "/" });
-    setToken( response.data.access_token, response.data.refresh_token)
+    setToken(response.data.access_token, response.data.refresh_token)
 
     return response.data.access_token;
   } catch (error) {
@@ -37,7 +37,7 @@ const refreshAccessToken = async () => {
 
 axiosInstance.interceptors.request.use(
   function (config) {
-    
+
     const token = cookies.get("access_token");
 
     config.headers["Authorization"] = `Bearer ${token}`;
@@ -67,11 +67,26 @@ axiosInstance.interceptors.response.use(
       document.body.classList.remove("loading-indicator");
     }
 
+    const { method } = response.config;
+
+    if (
+      (method === "put" || method === "post" || method === "delete")) {
+      toast.success('Data updated successfully', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnFocusLoss: true,
+        draggable: true,
+        pauseOnHover: true,
+      });
+    }
+
     return response;
   },
 
   async function (error) {
-    
+
     numberOfAjaxCAllPending--;
     const originalRequest = error.config;
 
@@ -87,8 +102,8 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       }
     } else {
-      if(error?.response?.data?.message) {
-        for(let err of error.response.data.message) {
+      if (error?.response?.data?.message) {
+        for (let err of error.response.data.message) {
           toast.error(err, {
             position: "top-right",
             autoClose: 3000,
@@ -99,7 +114,7 @@ axiosInstance.interceptors.response.use(
             pauseOnHover: true,
           });
         }
-      }       
+      }
     }
 
     return Promise.reject(error);

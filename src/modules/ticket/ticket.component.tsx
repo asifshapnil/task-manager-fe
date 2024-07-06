@@ -112,18 +112,20 @@ const TicketComponent = forwardRef(({
                             }
                         })).then((data: any) => {
                             console.log(data);
-                            const tickethistoryData = {
-                                action: `added the ticket`,
-                                ticket: {
-                                    id: data.payload.id
-                                },
-                                user: {
-                                    id: getUserInfo().sub
+                            if(data) {
+                                const tickethistoryData = {
+                                    action: `added the ticket`,
+                                    ticket: {
+                                        id: data.payload.id
+                                    },
+                                    user: {
+                                        id: getUserInfo().sub
+                                    }
                                 }
+                                onRefetchCategory();
+                                dispatch(postTickethistory(tickethistoryData));
+                                handleCloaseModal();
                             }
-                            onRefetchCategory();
-                            dispatch(postTickethistory(tickethistoryData));
-                            handleCloaseModal();
                         });
                     } else {
                         dispatch(updateTicket({
@@ -167,8 +169,8 @@ const TicketComponent = forwardRef(({
     useEffect(() => {
          
         if (Object.keys(ticketDetail).length) {
+            setsanitizedHTML(DOMPurify.sanitize(ticketDetail.description));
             setInitialValues(ticketDetail);
-            DOMPurify.sanitize(ticketDetail.description)
         }
     }, [ticketDetail])
 

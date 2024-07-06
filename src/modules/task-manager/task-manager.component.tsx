@@ -110,6 +110,8 @@ const TaskManagerComponent = () => {
             }
         }
 
+        delete ticket.tickethistory;
+        
         dispatch(updateTicket({
             ...ticket, category: {
                 id: targetCategoryId
