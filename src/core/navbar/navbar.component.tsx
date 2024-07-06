@@ -1,4 +1,4 @@
-import { faAdd, faBell } from "@fortawesome/free-solid-svg-icons";
+import { faAdd, faBell, faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
@@ -8,10 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import NotificationComponent from "../notification/notification.component";
 import { getNotifications } from "../../store/notification.slice";
 import TextLogo from "../common/textlogo.component";
+import Cookies from "universal-cookie";
+import { removeToken } from "../auth.service";
 
 const NavbarComponent = () => {
     const dispatch = useDispatch();
-
+    const cookies = new Cookies();
     const [isShowNotification, setIsShowNotification] = useState(false);
     const notificationRef = useRef<HTMLDivElement>(null);
     const notificationCount = useSelector((state: any) => state.notification.notificationCount);
@@ -76,6 +78,16 @@ const NavbarComponent = () => {
                                         </div>
                                     }
                                 </div>
+                            </div>
+                        </Nav.Link>
+                        <Nav.Link
+                            as={NavLink}
+                            to="#"
+                        >
+                            <div className="nav-item ms-5" onClick={() => {
+                                removeToken();
+                            }}>
+                                <FontAwesomeIcon icon={faSignOut} className="fs-7" />
                             </div>
                         </Nav.Link>
                     </Nav>

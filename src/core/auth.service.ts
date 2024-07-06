@@ -14,6 +14,7 @@ export function setToken(access_token: string, refresh_token: string) {
 export function removeToken() {
     cookies.remove("access_token", { path: "/" });
     cookies.remove("refresh_token", { path: "/" });
+    window.location.href = 'http://localhost:3001';
 }
 
 
