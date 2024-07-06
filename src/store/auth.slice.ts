@@ -15,7 +15,7 @@ export const signIn: any = createAsyncThunk(
     async (payload: any) => {
         const res = await axios.post(`/users/signin`, payload);
         const data = await res.data;
-        debugger
+         
         return data;
     }
 );

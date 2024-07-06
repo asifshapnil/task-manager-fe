@@ -42,6 +42,9 @@ export const ticketSlice = createSlice({
     name: "ticket",
     initialState,
     reducers: {
+        setTicketDetail(state: any, action: any) {
+            state.ticketDetail = action.payload;
+        }
     },
     extraReducers: (builder: any) => {
         builder.addCase(getTicket.pending, (state: any) => {
@@ -80,4 +83,5 @@ export const ticketSlice = createSlice({
     },
 });
 
+export const {setTicketDetail} = ticketSlice.actions;
 export default ticketSlice.reducer;

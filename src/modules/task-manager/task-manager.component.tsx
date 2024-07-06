@@ -23,6 +23,7 @@ const TaskManagerComponent = () => {
     const [isTicketModalOpen, setIsTicketModalOpen] = useState(false);
     const [selectedTicket, setSelectedTicket] = useState(null as any);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null as any);
+    const [isTicketEditModeEnabled, setIsTicketEditModeEnabled] = useState(false);
 
     const [initialValues, setInitialValues] = useState<any>({
         name: "",
@@ -65,12 +66,12 @@ const TaskManagerComponent = () => {
 
     const onSubmitTicket = () => {
         ticketRefernce.current?.onSubmit();
-        handleCloseModal();
     }
 
     const handleCloseModal = () => {
         setIsShowModal(false);
         setIsTicketModalOpen(false);
+        setSelectedTicket(null);
     }
 
     const modalActionConfig = [
@@ -80,13 +81,13 @@ const TaskManagerComponent = () => {
             variant: "primary",
         },
     ]
-    const modalActionConfigForTicket = [
+    const modalActionConfigForTicket = isTicketEditModeEnabled || !selectedTicket ? [
         {
             label: "Save",
             event: onSubmitTicket,
             variant: "primary",
         },
-    ]
+    ] : null
 
     useEffect(() => {
         dispatch(getCategories());
@@ -153,8 +154,13 @@ const TaskManagerComponent = () => {
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card" draggable
                                         onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
-                                        <div className="title" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(_.cloneDeep(ticket)); setSelectedCategoryId(cat.id) }}>
-                                        PROJ-{ticket.id} {ticket.title}
+                                        <div className="title" style={{ cursor: 'pointer' }}
+                                            onClick={() => {
+                                                setSelectedTicket(_.cloneDeep(ticket));
+                                                setIsTicketEditModeEnabled(false);
+                                                setSelectedCategoryId(cat.id)
+                                            }}>
+                                            PROJ-{ticket.id} {ticket.title}
                                         </div>
                                         <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-1`}>
                                             Priority:
@@ -169,7 +175,7 @@ const TaskManagerComponent = () => {
                                                     {moment(ticket.expirydate).format(
                                                         "DD-MM-YYYY "
                                                     )}
-                                                </>: 'Not added'}
+                                                </> : 'Not added'}
                                             </span>
                                         </div>
                                     </div>
@@ -212,7 +218,11 @@ const TaskManagerComponent = () => {
         >
             <TicketComponent reference={ticketRefernce}
                 selectedCategoryId={selectedCategoryId}
-                selectedTicket={selectedTicket} />
+                selectedTicket={selectedTicket}
+                setIsTicketEditModeEnabled={setIsTicketEditModeEnabled}
+                isTicketEditModeEnabled={isTicketEditModeEnabled}
+                handleCloaseModal={handleCloseModal}
+            />
         </ModalComponent>
     </>
 }

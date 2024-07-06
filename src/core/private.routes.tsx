@@ -14,7 +14,7 @@ const PrivateRoute: FC<Props> = ({
 
     useEffect(() => {
         const checkLogin = async () => {
-            debugger
+             
             const isLoggedIn: boolean = await getLoginStatus();
             console.log(isLoggedIn);
 

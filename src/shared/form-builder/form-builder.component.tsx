@@ -76,6 +76,7 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
   fileConfig,
   renderCount,
 }) => {
+   
   const { controls } = formConfig;
   const dispatch = useDispatch();
 
@@ -477,12 +478,17 @@ const FormBuilderComponent: FC<FormBuilderComponentProps> = ({
                                     value={content}
                                     config={config}
                                     onBlur={(newContent: any) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                                    onChange={(newContent: any) => { 
+                                    onChange={(newContent: any) => {
                                       setFieldValue(
                                         control?.name,
                                         newContent
                                       );
                                     }}
+                                  />
+                                  <ErrorMessage
+                                    name={control.name}
+                                    component="div"
+                                    className="error-message"
                                   />
                                 </div>
                               </div>
