@@ -6,13 +6,19 @@ import { getTicket, postTicket, updateTicket } from "../../store/ticket.slice";
 import { getCategories } from "../../store/category.slice";
 import { useSelector } from "react-redux";
 import SkeletonComponent from "../../shared/skeleton/skeleton.component";
+import moment from "moment";
+import DOMPurify from 'dompurify';
+import './ticket.scss';
+import { ListGroup } from "react-bootstrap";
 
 const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTicket }: any) => {
     const dispatch = useDispatch();
     const formRef = createRef();
+    const sanitizedHTML = DOMPurify.sanitize(selectedTicket.description);
     const ticketDetail = useSelector((state: any) => state.ticket.ticketDetail);
     const isLoadingTicket = useSelector((state: any) => state.ticket.isLoadingTicket);
-    
+    const [isEditMode, setIsEditMode] = useState(false);
+
     const [initialValues, setInitialValues] = useState<any>({
         title: "",
         description: "",
@@ -124,12 +130,62 @@ const TicketComponent = forwardRef(({ reference, selectedCategoryId, selectedTic
                 isLoading={selectedTicket ? isLoadingTicket : false}
                 count={6}
             >
-                <FormBuilderComponent
-                    formRef={formRef}
-                    initialValues={initialValues}
-                    validation={validationSchema}
-                    formConfig={formConfiguration}
-                />
+                {!selectedTicket ?
+                    <FormBuilderComponent
+                        formRef={formRef}
+                        initialValues={initialValues}
+                        validation={validationSchema}
+                        formConfig={formConfiguration}
+                    /> :
+                    <>
+                        {isEditMode ?
+                            <FormBuilderComponent
+                                formRef={formRef}
+                                initialValues={initialValues}
+                                validation={validationSchema}
+                                formConfig={formConfiguration}
+                            /> :
+                            <div>
+                                <div className="title">
+                                    PROJ-{ticketDetail.id} {ticketDetail?.title}
+                                </div>
+                                <div className={`${ticketDetail.priority === 'high' ? 'high' : ticketDetail.priority === 'medium' ? 'medium' : 'low'} mt-1`}>
+                                    Priority:
+                                    <span className="ms-2">
+                                        {ticketDetail.priority}
+                                    </span>
+                                </div>
+                                <div className="exdate">
+                                    Expires in:
+                                    <span className="ms-2">
+                                        {ticketDetail.expirydate ? <>
+                                            {moment(ticketDetail.expirydate).format(
+                                                "DD-MM-YYYY "
+                                            )}
+                                        </> : 'Not added'}
+                                    </span>
+                                </div>
+                                <div className="mt-3 ticketbodytitle">Description</div>
+                                <div className="description" dangerouslySetInnerHTML={{ __html: sanitizedHTML }} />
+
+                                <div className="mt-3 ticketbodytitle">History</div>
+                                <div>
+                                    <ul>
+                                        {ticketDetail?.tickethistory?.map((history: any) => (
+                                            <li>
+                                                {history.user.email.split('@')[0]} {history.action } on {moment(ticketDetail.createdAt).format(
+                                                "DD-MM-YYYY "
+                                            )}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+
+                            </div>
+                        }
+                    </>
+                }
+
             </SkeletonComponent>
         </div>
     </>

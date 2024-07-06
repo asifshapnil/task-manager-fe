@@ -10,6 +10,9 @@ import * as yup from "yup";
 import TicketComponent from "../ticket/ticket.component";
 import { updateTicket } from "../../store/ticket.slice";
 import moment from "moment";
+import { postTickethistory } from "../../store/tickethistory.slice";
+import { getUserInfo } from "../../core/auth.service";
+import * as _ from 'lodash';
 
 const TaskManagerComponent = () => {
     const dispatch = useDispatch();
@@ -95,15 +98,24 @@ const TaskManagerComponent = () => {
     }, [selectedTicket])
 
     const moveTicket = (ticket: any, categoryId: any, targetCategoryId: any) => {
-        console.log(categoryId);
-        console.log(targetCategoryId);
-        console.log(ticket);
+        const targetCategory = categories.find(((cat: any) => cat.id === targetCategoryId));
+        const tickethistoryData = {
+            action: `moved the ticket to ${targetCategory.name}`,
+            ticket: {
+                id: ticket.id
+            },
+            user: {
+                id: getUserInfo().sub
+            }
+        }
+
         dispatch(updateTicket({
             ...ticket, category: {
                 id: targetCategoryId
             }
         })).then(() => {
             dispatch(getCategories());
+            dispatch(postTickethistory(tickethistoryData))
         })
 
     }
@@ -141,8 +153,8 @@ const TaskManagerComponent = () => {
                                 {cat.tickets.map((ticket: any) => (
                                     <div className="ticket-card" draggable
                                         onDragStart={(event) => handleDragStart(event, ticket, cat.id)}>
-                                        <div className="title" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(ticket); setSelectedCategoryId(cat.id) }}>
-                                            {ticket.title}
+                                        <div className="title" style={{ cursor: 'pointer' }} onClick={() => { setSelectedTicket(_.cloneDeep(ticket)); setSelectedCategoryId(cat.id) }}>
+                                        PROJ-{ticket.id} {ticket.title}
                                         </div>
                                         <div className={`${ticket.priority === 'high' ? 'high' : ticket.priority === 'medium' ? 'medium' : 'low'} mt-1`}>
                                             Priority:
