@@ -7,11 +7,16 @@ import { signIn } from "../../store/auth.slice";
 import { useNavigate } from "react-router-dom";
 import TextLogo from "../common/textlogo.component";
 
+export interface InitialValues {
+    email: string;
+    password: string;
+}
+
 const SignInComponent = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const formRef = createRef();
-    const [initialValues, setInitialValues] = useState<any>({
+    const [initialValues, setInitialValues] = useState<InitialValues>({
         email: "",
         password: ""
     });

@@ -17,7 +17,7 @@ export function removeToken() {
 }
 
 
-export function getTokenDcrypted(token: any) {
+export function getTokenDcrypted(token: string) {
     return jwtDecode(token);
 }
 
