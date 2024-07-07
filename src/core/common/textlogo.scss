@@ -1,0 +1,17 @@
+@media(max-width: 600px) {
+    .logo-xl {
+        display: none !important;
+    }
+    .logo-sm {
+        display: block !important;
+    }
+}
+
+@media(min-width: 601px) {
+    .logo-xl {
+        display: block !important;
+    }
+    .logo-sm {
+        display: none !important;
+    }
+}

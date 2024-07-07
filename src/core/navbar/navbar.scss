@@ -47,3 +47,10 @@
 //     border-color: #1976D2 transparent transparent transparent;
 //     transform: rotate(180deg);
 //   }
+
+@media (max-width: 600px) {
+    .notification {
+        width: 350px;
+        right: -87px;
+    }
+}
