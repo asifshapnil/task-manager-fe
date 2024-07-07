@@ -99,6 +99,7 @@ const TaskManagerComponent = () => {
     }, [selectedTicket])
 
     const moveTicket = (ticket: any, categoryId: any, targetCategoryId: any) => {
+        if(categoryId === targetCategoryId) return;
         const targetCategory = categories.find(((cat: any) => cat.id === targetCategoryId));
         const tickethistoryData = {
             action: `moved the ticket to ${targetCategory.name}`,

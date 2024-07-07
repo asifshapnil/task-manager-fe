@@ -3,6 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import Cookies from "universal-cookie";
 import { getUserInfo, removeToken, setToken } from "./auth.service";
+import { isToastUnavailableRoute } from "./is-toast-unavailble-route";
 
 var numberOfAjaxCAllPending = 0;
 const cookies = new Cookies();
@@ -68,9 +69,10 @@ axiosInstance.interceptors.response.use(
     }
 
     const { method } = response.config;
+    const responseURL = response.request.responseURL;
+    const isAvailable = isToastUnavailableRoute(responseURL);
 
-    if (
-      (method === "put" || method === "post" || method === "delete")) {
+    if ((method === "put" || method === "post" || method === "delete") && !isAvailable) {
       toast.success('Data updated successfully', {
         position: "top-right",
         autoClose: 3000,
